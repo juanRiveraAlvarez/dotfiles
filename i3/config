@@ -15,7 +15,7 @@ set $mod Mod4
 # is used in the bar {} block below.
 #font pango:monospace 8
 #font pango:Source Code Variable 10
-font pango:agave Nerd Font 15
+font pango:agave Nerd Font 11
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -61,7 +61,7 @@ bindsym $mod+Shift+p exec gnome-screenshot -i
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -73,7 +73,6 @@ bindsym $mod+Shift+q kill
 #bindsym $mod+d exec dmenu_run
 set $bg "#444477"
 
-bindsym $mod+F2 exec dmenu_run -i -fn "Agave 25" -nf '#028DB9' -sb '#028DB9' -sf '#028DB9'
 bindsym $mod+d exec rofi -show drun  -font "agave Nerd Font 14" 
 bindsym $mod+Tab exec rofi -show window -front "agave Nerd Font 15"
 
@@ -220,8 +219,8 @@ bindsym $mod+r mode "resize"
 #hide_edge_borders both
 #
 #ara posam es gaps de sa pantalla
-gaps inner 3
-gaps outer 3
+gaps inner 10
+gaps outer 10
 #smart_gaps on
 smart_borders on
 #
@@ -263,8 +262,9 @@ bindsym $mod+c exec /home/gerry/.config/i3/webcam.sh
 bindsym $mod+e exec thunar
 #bindsym --release Caps_Lock exec pkill -SIGRTMIN+2 i3blocks
 
-exec_always setxkbmap -layout "latam"
-exec_always feh --bg-fill "./487192.jpg"
+exec_always setxkbmap -layout "us"
+exec_always xwinwrap -g 1366x768+1366 -ov -ni -- mpv --no-audio -wid WID -loop "/home/juan/Pictures/fondo.mp4"
+exec_always xwinwrap -g 1366x768 -ov -ni -- mpv --no-audio -wid WID -loop "/home/juan/Pictures/fondo.mp4"
 exec_always /home/gerry/.config/i3/monitors.sh auto
 exec_always /home/gerry/.config/i3/wallpaper.sh
 #exec_always /home/juan/.config/i3/polybar.sh

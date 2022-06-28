@@ -1,26 +1,35 @@
-background_opacity: 1.0
 colors:
   bright:
-    black: '#928374'
-    blue: '#83a598'
-    cyan: '#8ec07c'
-    green: '#b8bb26'
-    magenta: '#d3869b'
-    red: '#fb4934'
-    white: '#ebdbb2'
-    yellow: '#fabd2f'
+    black: '0x5c6370'
+    blue: '0x61afef'
+    cyan: '0x56b6c2'
+    green: '0x98c379'
+    magenta: '0xc678dd'
+    red: '0xe06c75'
+    white: '0xe6efff'
+    yellow: '0xd19a66'
+  dim:
+    black: '0x1e2127'
+    blue: '0x61afef'
+    cyan: '0x56b6c2'
+    green: '0x98c379'
+    magenta: '0xc678dd'
+    red: '0xe06c75'
+    white: '0x828791'
+    yellow: '0xd19a66'
   normal:
-    black: '#282828'
-    blue: '#458588'
-    cyan: '#689d6a'
-    green: '#98971a'
-    magenta: '#b16286'
-    red: '#cc241d'
-    white: '#a89984'
-    yellow: '#d79921'
+    black: '0x1e2127'
+    blue: '0x61afef'
+    cyan: '0x56b6c2'
+    green: '0x98c379'
+    magenta: '0xc678dd'
+    red: '0xe06c75'
+    white: '0x828791'
+    yellow: '0xd19a66'
   primary:
-    background: '#282828'
-    foreground: '#ebdbb2'
+    background: '0x1e2127'
+    bright_foreground: '0xe6efff'
+    foreground: '0xabb2bf'
 font:
   bold:
     family: agave Nerd Font
@@ -31,5 +40,7 @@ font:
     style: Regular
   size: 12.0
 window:
+  opacity: 0.85
   padding:
-    x: 2
+    x: 5
+    y: 5
