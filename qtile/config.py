@@ -76,11 +76,11 @@ keys = [
 ]
 
 __groups = {
-    1:Group("    "),
-    2:Group("    "),
-    3:Group("   "),
-    4:Group("   "),
-    5:Group(" ﭮ  "),
+    1:Group("     "),
+    2:Group("     "),
+    3:Group("     "),
+    4:Group("     "),
+    5:Group("  ﭮ "),
 }
 
 groups = [__groups[i] for i in __groups]
@@ -142,9 +142,9 @@ screens = [
                 widget.GroupBox(
                     active="#f90000",
                     inactive="#ffffff",
-                    highlight_method='line',
-                    #highlight_color="ff7f7f",
-                    #block_highlight_text_color="ff7f7f",
+                    highlight_method='block',
+                    highlight_color="#f8888",
+                    #block_highlight_text_color="#dd3333",
                     spacing=0,
                     border_width=0,
                     padding=10,
@@ -159,16 +159,17 @@ screens = [
                 #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 widget.Systray(),
                 widget.Sep(padding=530, linewidth=0, size_percent=50),
-                widget.TextBox("|", foreground="#d75f5f"),
+                widget.TextBox("|", foreground="#f90000"),
                 widget.Memory(measure_mem='G'),
-                widget.TextBox("|", foreground="#d75f5f"),
+                widget.TextBox("|", foreground="#f90000"),
                 widget.CPU(),
-                widget.TextBox("|", foreground="#d75f5f"),
+                widget.TextBox("|", foreground="#f90000"),
                 widget.Clock(format="%Y-%m-%d %I:%M %p"),
-                widget.TextBox("|", foreground="#d75f5f"),
+                widget.TextBox("|", foreground="#f90000"),
                 widget.QuickExit(),
             ],
             24,
+            opacity=0.7
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
