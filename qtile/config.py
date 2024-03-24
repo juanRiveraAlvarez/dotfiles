@@ -29,10 +29,13 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-import os
+import subprocess
+
+colores = {"bg-dark":"#302f2d","bg":"#e1d6a9","red":"#cc241d","green":"#98971a","yellow":"#d79921","blue":"#458588","purple":"#b16286","aqua":"#689d6a","gray":"#928374"}
+
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "kitty"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -51,9 +54,9 @@ keys = [
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
+    Key([mod, "control"], "h", lazy.layout.shrink(), desc="Grow window to the left"),
+    Key([mod, "control"], "l", lazy.layout.grow_down(), desc="Grow window to the right"),
+    Key([mod, "control"], "j", lazy.layout.shrink(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
@@ -68,20 +71,38 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
+    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, "shift"], "q", lazy.window.kill(), desc="Kill focused window"),
+    Key(
+        [mod],
+        "f",
+        lazy.window.toggle_fullscreen(),
+        desc="Toggle fullscreen on the focused window",
+    ),
+    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Rofi menu"),
-    Key([mod], "Tab", lazy.spawn("rofi -show"), desc="Rofi windows"),
+    Key([mod, "control"], "c", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "e", lazy.spawn("thunar"), desc="Spawn a command using a prompt widget"),
+
+    Key([], "XF86AudioLowerVolume", lazy.spawn(
+        "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    )),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(
+        "pactl set-sink-volume @DEFAULT_SINK@ +5%"
+    )),
+    Key([], "XF86AudioMute", lazy.spawn(
+        "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    )),
+
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 ]
 
-__groups = {
-    1:Group("     "),
-    2:Group("     "),
-    3:Group("     "),
-    4:Group("     "),
-    5:Group("  ﭮ "),
-}
+
+
+__groups = { 1:Group(" 󰣇 "),2:Group("  "),3:Group(" 󰈙 "),4:Group("  "),5:Group("  "),6:Group("  "),7:Group("  ")}
+
 
 groups = [__groups[i] for i in __groups]
 
@@ -113,13 +134,14 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=6,singel_border_width=0,margin=6,single_margin=0,),
-    layout.Max(),
+    #layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    #layout.Max(),
+    #layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(),
+    layout.MonadTall(border_focus=[colores["purple"],colores["purple"]],margin=8,single_margin=8,border_width=3,border_on_single=colores["purple"]),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -129,9 +151,9 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="agave Nerd Font",
-    fontsize=14,
-    padding=3,
+    font="HackNerdFont",
+    fontsize=12,
+    padding=0,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -139,40 +161,89 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+   #             widget.CurrentLayout(),
                 widget.GroupBox(
-                    active="#f90000",
-                    inactive="#ffffff",
-                    highlight_method='block',
-                    highlight_color="#f8888",
-                    #block_highlight_text_color="#dd3333",
+                    background=colores["blue"],
+                    highlight_color=colores["purple"],
+                    highlight_method="line",
                     spacing=0,
-                    border_width=0,
-                    padding=10,
-                ),
+                    active=colores["gray"],
+                    block_highlight_text_color="#ffffff",
+                    borderwidth=0,
+                    padding=10
+
+                    ),
+                widget.TextBox(" ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
                 widget.Prompt(),
-                #widget.Chord(
-                #    chords_colors={
-                #        "launch": ("#ff0000", "#ffffff"),
-                #    },
-                #    name_transform=lambda name: name.upper(),
-                #),
-                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                widget.Systray(),
-                widget.Sep(padding=530, linewidth=0, size_percent=50),
-                widget.TextBox("|", foreground="#f90000"),
-                widget.Memory(measure_mem='G'),
-                widget.TextBox("|", foreground="#f90000"),
-                widget.CPU(),
-                widget.TextBox("|", foreground="#f90000"),
-                widget.Clock(format="%Y-%m-%d %I:%M %p"),
-                widget.TextBox("|", foreground="#f90000"),
-                widget.QuickExit(),
+                widget.WindowName(background=colores["bg-dark"],padding=5),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
+                widget.TextBox("",fontsize=35,background=colores["bg-dark"],foreground=colores["aqua"],padding=0),
+                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=2),
+                widget.Memory(background=[colores["aqua"]]),
+                widget.TextBox("",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=0),
+                widget.TextBox("",fontsize=16,background=colores["yellow"],padding=10),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"]),
+                widget.TextBox("",fontsize=30,background=colores["yellow"],foreground=colores["gray"],padding=2.5),
+                widget.QuickExit(background=colores["gray"]),
+                widget.Systray(background=colores["gray"]),
             ],
             24,
-            opacity=0.7
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
+        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+        # By default we handle these events delayed to already improve performance, however your system might still be struggling
+        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+        # x11_drag_polling_rate = 60,
+    ),
+    Screen(
+        top=bar.Bar(
+            [
+   #             widget.CurrentLayout(),
+                widget.GroupBox(
+                    background=colores["blue"],
+                    highlight_color=colores["purple"],
+                    highlight_method="line",
+                    spacing=0,
+                    active=colores["gray"],
+                    block_highlight_text_color="#ffffff",
+                    borderwidth=0,
+                    padding=10
+
+                    ),
+                widget.TextBox(" ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
+                widget.Prompt(),
+                widget.WindowName(background=colores["bg-dark"],padding=5),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
+                widget.TextBox("",fontsize=35,background=colores["bg-dark"],foreground=colores["aqua"],padding=0),
+                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=2),
+                widget.Memory(background=[colores["aqua"]]),
+                widget.TextBox("",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=0),
+                widget.TextBox("",fontsize=16,background=colores["yellow"],padding=10),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"]),
+            ],
+            24,
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
+        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+        # By default we handle these events delayed to already improve performance, however your system might still be struggling
+        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+        # x11_drag_polling_rate = 60,
     ),
 ]
 
@@ -187,6 +258,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
+floats_kept_above = True
 cursor_warp = False
 floating_layout = layout.Floating(
     float_rules=[
@@ -211,6 +283,8 @@ auto_minimize = True
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
 
+
+
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
 # mailing lists, GitHub issues, and other WM documentation that suggest setting
@@ -219,13 +293,34 @@ wl_input_rules = None
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
 
-autostart=[
-    "feh --bg-fill /home/juan/Pictures/fondo.jpg",
-    "picom --no-vsync &",
+#start =  ["feh --bg-fill /home/juan/Images/wallpaper.png &","xset b off &"]
+
+#for i in start:
+#    os.system(i)
+
+autostart = [
+        "feh --bg-fill /home/juan/Pictures/wallpaper.jpeg",
+        "xset b off",
+        "setxkbmap us",
+        "udiskie &",
+        "nm-applet &",
+        "cbatticon &",
+        "picom &",
+        "volumeicon &",
+
 ]
 
-for i in autostart:
-    os.system(i)
+#for x in autostart:
+#    os.system(x)
+
+for command in autostart:
+    try:
+        # Verificar si la aplicación ya está en ejecución
+        subprocess.check_call(["pgrep", "-f", command], stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        # La aplicación no está en ejecución, iniciarla
+        subprocess.Popen(command, shell=True)
+
+wmname = "LG3D"
 
