@@ -28,14 +28,26 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from qtile_extras import widget
+from qtile_extras.widget.decorations import PowerLineDecoration
+from PIL import Image
+import os
+import psutil
 
 import subprocess
 
-colores = {"bg-dark":"#302f2d","bg":"#e1d6a9","red":"#cc241d","green":"#98971a","yellow":"#d79921","blue":"#458588","purple":"#b16286","aqua":"#689d6a","gray":"#928374"}
+def rgbTohex(tupla):
+    return "#{:02x}{:02x}{:02x}".format(tupla[0],tupla[1],tupla[2])
+
+background_image = "/home/juan/Pictures/wallpaper2.png"
+img = Image.open(background_image)
+bg_dark = img.getpixel((5,5))
+
+colores = {"bg-dark":rgbTohex(bg_dark),"bg":"#e1d6a9","red":"#cc241d","green":"#98971a","yellow":"#d79921","blue":"#458588","purple":"#b16286","aqua":"#689d6a","gray":"#928374"}
 
 
 mod = "mod4"
-terminal = "kitty"
+terminal = "alacritty"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -83,7 +95,7 @@ keys = [
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "c", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
-    Key([mod], "e", lazy.spawn("thunar"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "e", lazy.spawn("alacritty -e ranger"), desc="Spawn a command using a prompt widget"),
 
     Key([], "XF86AudioLowerVolume", lazy.spawn(
         "pactl set-sink-volume @DEFAULT_SINK@ -5%"
@@ -101,7 +113,7 @@ keys = [
 
 
 
-__groups = { 1:Group(" 󰣇 "),2:Group("  "),3:Group(" 󰈙 "),4:Group("  "),5:Group("  "),6:Group("  "),7:Group("  ")}
+__groups = { 1:Group(" 󰣇 "),2:Group("  "),3:Group(" 󰈙 "),4:Group("  "),5:Group("  "),6:Group("  "),7:Group("  "),8:Group("  "),9:Group("  ")}
 
 
 groups = [__groups[i] for i in __groups]
@@ -157,6 +169,17 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+powerline = {
+        "decorations":[
+            PowerLineDecoration(path="rounded_left", padding_y=0)   
+        ]        
+}
+powerline2 = {
+        "decorations":[
+            PowerLineDecoration(path="rounded_right", padding_y=0)   
+        ]        
+    }
+
 screens = [
     Screen(
         top=bar.Bar(
@@ -170,10 +193,10 @@ screens = [
                     active=colores["gray"],
                     block_highlight_text_color="#ffffff",
                     borderwidth=0,
-                    padding=10
-
+                    padding=10,
+                    **powerline 
                     ),
-                widget.TextBox(" ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
+                widget.TextBox("  ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
                 widget.Prompt(),
                 widget.WindowName(background=colores["bg-dark"],padding=5),
                 widget.Chord(
@@ -184,14 +207,14 @@ screens = [
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.TextBox("",fontsize=35,background=colores["bg-dark"],foreground=colores["aqua"],padding=0),
-                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=2),
+                widget.TextBox("  ",fontsize=35,background=colores["bg-dark"],foreground=colores["aqua"],padding=0,**powerline2),
+                widget.TextBox(" 󰍛",fontsize=16,background=colores["aqua"],padding=2),
                 widget.Memory(background=[colores["aqua"]]),
-                widget.TextBox("",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=0),
+                widget.TextBox("  ",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=0,**powerline2),
                 widget.TextBox("",fontsize=16,background=colores["yellow"],padding=10),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"]),
-                widget.TextBox("",fontsize=30,background=colores["yellow"],foreground=colores["gray"],padding=2.5),
-                widget.QuickExit(background=colores["gray"]),
+                widget.TextBox("  ",fontsize=30,background=colores["yellow"],foreground=colores["gray"],padding=0, **powerline2),
+                widget.QuickExit(background=colores["gray"], padding=7),
                 widget.Systray(background=colores["gray"]),
             ],
             24,
@@ -215,10 +238,10 @@ screens = [
                     active=colores["gray"],
                     block_highlight_text_color="#ffffff",
                     borderwidth=0,
-                    padding=10
-
+                    padding=10,
+                    **powerline
                     ),
-                widget.TextBox(" ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
+                widget.TextBox("  ",fontsize=35,background=colores["bg-dark"],foreground=colores["blue"],padding=-6.65),
                 widget.Prompt(),
                 widget.WindowName(background=colores["bg-dark"],padding=5),
                 widget.Chord(
@@ -229,14 +252,14 @@ screens = [
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.TextBox("",fontsize=35,background=colores["bg-dark"],foreground=colores["aqua"],padding=0),
-                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=2),
-                widget.Memory(background=[colores["aqua"]]),
-                widget.TextBox("",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=0),
-                widget.TextBox("",fontsize=16,background=colores["yellow"],padding=10),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"]),
+                widget.TextBox(" ",fontsize=21,background=colores["bg-dark"],foreground=colores["aqua"],padding=0,**powerline2),
+                widget.TextBox(" 󰍛",fontsize=16,background=colores["aqua"],padding=1),
+                widget.Memory(background=[colores["aqua"]],padding=3),
+                widget.TextBox("  ",fontsize=21,background=colores["aqua"],foreground=colores["yellow"],padding=0,**powerline2),
+                widget.TextBox(" ",fontsize=16,background=colores["yellow"],padding=1),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"],padding=10),
             ],
-            24,
+            25,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -300,7 +323,7 @@ wl_input_rules = None
 #    os.system(i)
 
 autostart = [
-        "feh --bg-fill /home/juan/Pictures/wallpaper.jpeg",
+        f'feh --bg-fill {background_image} &',
         "xset b off",
         "setxkbmap us",
         "udiskie &",
@@ -308,19 +331,23 @@ autostart = [
         "cbatticon &",
         "picom &",
         "volumeicon &",
-
 ]
 
-#for x in autostart:
-#    os.system(x)
+def check(name):
+    name = name[:-2]
+    for i in psutil.process_iter(['pid','name']):
+        if name == i.info['name']:
+            return True
+    return False
 
-for command in autostart:
-    try:
-        # Verificar si la aplicación ya está en ejecución
-        subprocess.check_call(["pgrep", "-f", command], stdout=subprocess.PIPE)
-    except subprocess.CalledProcessError:
-        # La aplicación no está en ejecución, iniciarla
-        subprocess.Popen(command, shell=True)
+for x in autostart:
+    if check(x) is False:
+        os.system(x)
+
+    
+
+
+
 
 wmname = "LG3D"
 
