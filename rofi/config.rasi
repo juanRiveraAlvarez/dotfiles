@@ -1,0 +1,15 @@
+configuration {
+    show-icons: true;
+    font: "Agave Nerd Font 10";
+    icon-theme: "Papirus-Dark";
+
+    display-ssh:    "󰣀 ssh:";
+    display-drun:   "󱓞  :";
+    display-window: "󱂬 window:";
+    display-combi:  "󰕘 combi:";
+    display-filebrowser: "󰉋 filebrowser:";
+
+    dpi: 120;
+}
+
+@theme "gruvbox-material"

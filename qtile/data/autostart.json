@@ -1,0 +1,12 @@
+{
+  "autostart": [
+        "feh --bg-fill /home/juan/Pictures/wallpaper2.png &",
+        "xset b off",
+        "setxkbmap us",
+        "volumeicon &",
+        "udiskie &",
+        "nm-applet &",
+        "cbatticon &",
+        "picom &"
+  ]
+}
