@@ -1,11 +1,11 @@
 from libqtile.config import Screen
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
-from libqtile import bar, widget
+from libqtile import bar
 
 
-from extras import color_bar
-colores = color_bar.color_bar()
+from extras.color_bar import color_bar
+colores = color_bar()
 
 widget_defaults = dict(
     font="Agave Nerd Font",
@@ -86,16 +86,13 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.TextBox(" ",fontsize=21,background=colores["bg-dark"],foreground=colores["aqua"],padding=0,**powerline2),
-                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=10),
+                widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=7),
                 widget.Memory(background=[colores["aqua"]],padding=3),
                 widget.TextBox(" ",fontsize=21,background=colores["aqua"],foreground=colores["yellow"],padding=1,**powerline2),
-                widget.TextBox("",fontsize=16,background=colores["yellow"],padding=13),
+                widget.TextBox("",fontsize=16,background=colores["yellow"],padding=10),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"],padding=10),
             ],
-            25,
+            24,
         ),
     ),
 ]
-
-
-

@@ -1,7 +1,7 @@
 from libqtile import layout
 from libqtile.config import Match
-from  extras import color_bar
-colores = color_bar.color_bar()
+from  extras.color_bar import color_bar
+colores = color_bar()
 layouts = [
         layout.MonadTall(border_focus=[colores["purple"],colores["purple"]],margin=8,single_margin=8,border_width=3,border_on_single=colores["purple"]),
 ]

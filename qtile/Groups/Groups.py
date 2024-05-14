@@ -2,7 +2,7 @@ from libqtile.lazy import lazy
 from libqtile.config import Group, Key
 from Keys.Keys import keys, mod
 
-__groups = { 1:Group(" 󰣇 "),2:Group("  "),3:Group(" 󰈙 "),4:Group("  "),5:Group("  "),6:Group("  "),7:Group("  "),8:Group("  "),9:Group("  ")}
+__groups = { 1:Group(" 󰣇  "),2:Group("   "),3:Group(" 󰈙 "),4:Group("  "),5:Group("   "),6:Group("   "),7:Group("   "),8:Group("   "),9:Group("   ")}
 
 
 groups = [__groups[i] for i in __groups]
