@@ -1,9 +1,16 @@
 import json
 import os
 from PIL import Image
-background_image = '/home/juan/Pictures/wallpaper2.png'
+current_dir = os.path.dirname(os.path.abspath(__file__))
+json_file_path = os.path.join(current_dir,'..','data','autostart.json')
+with open(json_file_path,'r') as  f:
+    data = json.load(f)
+background_image= data["autostart"][0][14:-2]
+json_file_path = os.path.join(current_dir,'..','data','gruvbox.json')
+with open(json_file_path,'r') as  f:
+    data = json.load(f)
 def color_bar():
     img = Image.open(background_image)
-    colores = {"bg-dark":"#{:02x}{:02x}{:02x}".format(img.getpixel((5,5))[0],img.getpixel((5,5))[1],img.getpixel((5,5))[2]),"bg":"#e1d6a9","red":"#cc241d","green":"#98971a","yellow":"#d79921","blue":"#458588","purple":"#b16286","aqua":"#689d6a","gray":"#928374"}
+    colores = data['colores']
+    colores['bg-dark']="#{:02x}{:02x}{:02x}".format(img.getpixel((5,5))[0],img.getpixel((5,5))[1],img.getpixel((5,5))[2])
     return colores
-
