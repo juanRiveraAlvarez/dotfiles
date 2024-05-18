@@ -41,7 +41,6 @@
 window {
     location: center;
     anchor:   center;
-    border-radius: 10px;
     height: 400px;
     width: 500px;
 
@@ -69,7 +68,6 @@ inputbar {
     background-color: @gruv0;
     border-color: @purple;
 
-    border: 2px;
     border-radius: 10px 10px 0px 0px;
 }
 
@@ -78,16 +76,11 @@ entry, prompt, case-indicator {
     text-color: inherit;
 }
 
-prompt {
-    margin: 0px 1em 0em 0em ;
-}
 
 listview {
     padding: 8px;
     border-radius: 0px 0px 10px 10px;
-    border: 2px 2px 2px 2px;
     border-color: @purple;
-    border: 2;
     background-color: @gruv0;
     dynamic: false;
 }
@@ -128,7 +121,6 @@ element.alternate.normal {
 
 element-text, element-icon {
     size: 3ch;
-    margin: 0 10 0 0;
     vertical-align: 0.5;
     background-color: inherit;
     text-color: @gruv6;

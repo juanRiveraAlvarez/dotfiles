@@ -1,0 +1,17 @@
+feh
+volumeicon
+udiskie
+nm-applet
+cbatticon
+picom
+alacritty
+rofi
+thunar
+
+****
+pip
+****
+
+PIL
+
+

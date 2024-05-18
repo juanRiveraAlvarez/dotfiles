@@ -6,6 +6,7 @@ json_file_path = os.path.join(current_dir,'..','data','autostart.json')
 with open(json_file_path,'r') as  f:
     data = json.load(f)
 background_image= data["autostart"][0][14:-2]
+print(background_image)
 json_file_path = os.path.join(current_dir,'..','data','gruvbox.json')
 with open(json_file_path,'r') as  f:
     data = json.load(f)

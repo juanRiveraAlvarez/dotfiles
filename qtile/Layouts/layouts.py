@@ -3,7 +3,7 @@ from libqtile.config import Match
 from  extras.color_bar import color_bar
 colores = color_bar()
 layouts = [
-        layout.MonadTall(border_focus=[colores["purple"],colores["purple"]],margin=8,single_margin=8,border_width=3,border_on_single=colores["purple"]),
+        layout.MonadTall(border_focus=[colores["purple"],colores["purple"]],margin=15,single_margin=15,border_width=0,border_on_single=colores["purple"]),
 ]
 floating_layout = layout.Floating(
         float_rules=[
@@ -15,5 +15,5 @@ floating_layout = layout.Floating(
             Match(title="branchdialog"),  # gitk
             Match(title="pinentry"),  # GPG key password entry
         ],
-        border_focus = colores["purple"]
+        border_width = 0
 )

@@ -1,10 +1,3 @@
-from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
-from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
-from qtile_extras import widget
-from qtile_extras.widget.decorations import PowerLineDecoration
-
 from Keys.Keys import keys, mod, terminal
 from Groups.Groups import groups
 from Layouts.layouts import layouts, floating_layout
