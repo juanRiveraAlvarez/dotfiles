@@ -1,6 +1,6 @@
 {
     "autostart": [
-        "feh --bg-fill /home/juan/Pictures/wallpaper10.png &",
+        "feh --bg-fill /home/juan/Pictures/wallpaper13.png &",
         "xset b off",
         "setxkbmap us",
         "volumeicon &",

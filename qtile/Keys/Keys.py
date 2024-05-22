@@ -37,6 +37,7 @@ keys = [
     Key([mod, "control"], "c", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
     Key([mod], "e", lazy.spawn("alacritty -e ranger"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "s", lazy.spawn("python /home/juan/.config/rofi/rofi.py | rofi -dmenu | python /home/juan/.config/rofi/shutdown.py",shell=True), desc="Rofi menu to shutdown"),
 
     Key([], "XF86AudioLowerVolume", lazy.spawn(
         "pactl set-sink-volume @DEFAULT_SINK@ -5%"
