@@ -8,7 +8,7 @@ from extras.color_bar import color_bar
 colores = color_bar()
 
 widget_defaults = dict(
-    font="Agave Nerd Font",
+    font="AgaveNerdFont",
     fontsize=12,
     padding=0,
 )
@@ -40,24 +40,24 @@ screens = [
                     padding=10,
                     **powerline 
                     ),
-                widget.TextBox("  ",fontsize=35,foreground=colores["blue"],padding=-6.65),
+                widget.TextBox("  ",fontsize=35,foreground=colores["gray"],padding=-6),
                 widget.Prompt(),
-                widget.WindowName(padding=5),
+                widget.WindowName(padding=5,foreground=colores["gray"]),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("  ",fontsize=35,foreground=colores["aqua"],padding=-10,**powerline2),
+                widget.TextBox("  ",fontsize=35,foreground=colores["aqua"],padding=-0,**powerline2),
                 widget.TextBox("󰍛",fontsize=16,background=colores["aqua"],padding=10),
                 widget.Memory(background=[colores["aqua"]]),
-                widget.TextBox("  ",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=-10,**powerline2),
+                widget.TextBox("  ",fontsize=35,background=colores["aqua"],foreground=colores["yellow"],padding=-5,**powerline2),
                 widget.TextBox("",fontsize=16,background=colores["yellow"],padding=13),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p",background=colores["yellow"]),
-                widget.TextBox("  ",fontsize=30,background=colores["yellow"],foreground=colores["gray"],padding=-10, **powerline2),
+                widget.TextBox("  ",fontsize=30,background=colores["yellow"],foreground=colores["gray"],padding=-5, **powerline2),
                 widget.QuickExit(background=colores["gray"], padding=0),
-                widget.TextBox("  ",fontsize=30,background=colores["gray"],foreground=colores["bg-dark"],padding=-10, **powerline),
+                widget.TextBox("  ",fontsize=30,background=colores["gray"],foreground=colores["bg-dark"],padding=-11, **powerline),
                 Systray(),
             ],
             24,
@@ -81,7 +81,7 @@ screens = [
                     ),
                 widget.TextBox("  ",fontsize=35,foreground=colores["blue"],padding=-6.65),
                 widget.Prompt(),
-                widget.WindowName(padding=5),
+                widget.WindowName(padding=5,foreground=colores["gray"]),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),

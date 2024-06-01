@@ -46,7 +46,16 @@ colorscheme gruvbox
 let g:gruvbox_contrast_dark='hard'
 nnoremap zz :NERDTreeToggle<CR>
 nnoremap ff :Telescope find_files<cr>
+nnoremap zk :bnext<cr>
+nnoremap zj :bprevious<cr>
 nnoremap <Esc> <C-n>
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ' '
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#enabled = 1
 
 nnoremap sp :split<CR>
 nnoremap fv :vs<CR>

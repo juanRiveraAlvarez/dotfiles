@@ -7,6 +7,7 @@ picom
 alacritty
 rofi
 thunar
+xcursor-themes
 
 ****
 pip
