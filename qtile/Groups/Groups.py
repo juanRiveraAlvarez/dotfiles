@@ -5,10 +5,14 @@ from Keys.Keys import keys, mod
 __groups = { 1:Group(" 󰣇  "),2:Group(" 󰈹  "),3:Group(" 󰈙 "),4:Group("  "),5:Group("   "),6:Group("   "),7:Group("   "),8:Group("   "),9:Group("   ")}
 
 
+
 groups = [__groups[i] for i in __groups]
+
+
 
 def get_group_key(name):
     return [k for k, g in __groups.items() if g.name == name][0]
+
 
 for i in groups:
     keys.extend(
