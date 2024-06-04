@@ -29,6 +29,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' }
+  },
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/cmp-buffer'},
   {'hrsh7th/cmp-path'},
@@ -55,6 +59,7 @@ require("lazy").setup({
     	end,
 	}
 })
+
 
 local on_attach = function(_,bufnr)
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
@@ -98,17 +103,7 @@ cmp.setup({
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-       ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-      end, { "i", "s" }),
+      ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
@@ -125,9 +120,56 @@ cmp.setup({
     })
   })
 
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = ' | ', right = ' | '},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 1000,
+      tabline = 1000,
+      winbar = 1000,
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {
+     lualine_a = {'buffers'},
+      lualine_z = {'tabs'}
+  },
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
+
 vim.opt.termguicolors = true
 vim.cmd.colorscheme('gruvbox')
 
+vim.keymap.set('n', 'zj', '<cmd>bprevious<cr>', {desc = 'Open terminal'})
+vim.keymap.set('n', 'zk', '<cmd>bnext<cr>', {desc = 'Open terminal'})
+vim.keymap.set('n', 'zq', '<cmd>bdelete<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'tt', '<cmd>term<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'fv', '<cmd>vs<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'sp', '<cmd>split<cr>', {desc = 'Open terminal'})
