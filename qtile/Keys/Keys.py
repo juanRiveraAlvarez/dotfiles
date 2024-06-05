@@ -38,7 +38,7 @@ keys = [
     Key([mod], "d", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
     Key([mod], "e", lazy.spawn("thunar"), desc="Spawn a command using a prompt widget"),
     Key([mod], "s", lazy.spawn("python /home/juan/.config/rofi/rofi.py | rofi -dmenu -p '' | python /home/juan/.config/rofi/shutdown.py",shell=True), desc="Rofi menu to shutdown"),
-    Key([mod, "shift"], "p", lazy.spawn("ls ~/Projects | rofi -dmenu -p '  ' | xargs -I_ alacritty -e nvim ~/Projects/_",shell=True), desc="Rofi menu to shutdown"),
+    Key([mod, "shift"], "p", lazy.spawn("ls ~/Projects | rofi -dmenu -p '  ' | xargs -L 1 alacritty -e bash -c 'cd ~/Projects/"+'"$0"'+" && nvim'",shell=True), desc="Rofi menu to shutdown"),
     Key([mod], "tab", lazy.spawn("rofi -show",shell=True), desc="Rofi menu to shutdown"),
     Key([mod, "shift"], "f", lazy.spawn("rofi -dmenu -p '󰈹  ' | xargs -I_ firefox --search _",shell=True), desc="Rofi menu to shutdown"),
 
