@@ -12,7 +12,8 @@ xcursor-themes
 ****
 pip
 ****
-
+psutil
+widget_extras
 PIL
 
 
