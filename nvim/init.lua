@@ -30,6 +30,26 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = "VeryLazy",
+    main = "nvim-treesitter.configs",
+    opts = {
+      ensure_installed = {
+        "javascript",
+        "java",
+        "typescript",
+        "python",
+      },
+      highlight = {
+        enable = true,
+      },
+      ident = {
+        enable = true,
+      },
+    },
+  },
+  {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
@@ -65,7 +85,49 @@ local on_attach = function(_,bufnr)
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.keymap.set('n','gd',vim.lsp.buf.definition,{buffer = bufnr})
   vim.keymap.set('n','gi',vim.lsp.buf.implementation,{buffer = bufnr})
+  vim.keymap.set('n','ff', function()
+    vim.lsp.buf.format {async = true}
+  end, {buffer = bufnr})
 end
+
+require'lspconfig'.tsserver.setup{
+  on_attach == on_attach,
+  init_options = {
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+        languages = {"javascript", "typescript", "vue"},
+      },
+    },
+  },
+  filetypes = {
+    "javascript",
+    "typescript",
+    "vue",
+  },
+}
+
+require'lspconfig'.clangd.setup{
+  on_attach = on_attach,
+}
+
+--Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+require'lspconfig'.html.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+require'lspconfig'.cssls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 
 require'lspconfig'.pylsp.setup{
   on_attach = on_attach,
@@ -80,6 +142,25 @@ require'lspconfig'.pylsp.setup{
     }
   }
 }
+
+require'lspconfig'.tsserver.setup{
+  on_attach = on_attach,
+  init_options = {
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+        languages = {"javascript", "typescript", "vue"},
+      },
+    },
+  },
+  filetypes = {
+    "javascript",
+    "typescript",
+    "vue",
+  },
+}
+
 require'lspconfig'.jdtls.setup{ 
   on_attach = on_attach,
   cmd = { 'jdtls' } 
