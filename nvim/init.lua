@@ -29,6 +29,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {'hrsh7th/vim-vsnip'},
+  {'hrsh7th/vim-vsnip-integ'},
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -40,9 +42,6 @@ require("lazy").setup({
         "java",
         "typescript",
         "python",
-        "html",
-        "css",
-        "xml",
       },
       highlight = {
         enable = true,
@@ -111,11 +110,6 @@ require'lspconfig'.tsserver.setup{
   },
 }
 
-require'lspconfig'.lemminx.setup{
-  on_attach = on_attach,
-}
-
-
 require'lspconfig'.clangd.setup{
   on_attach = on_attach,
 }
@@ -135,7 +129,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 require'lspconfig'.cssls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = { "vscode-css-language-server", "--stdio" },
 }
 
 require'lspconfig'.pylsp.setup{
@@ -181,7 +174,7 @@ cmp.setup({
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
@@ -201,7 +194,7 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      --{ name = 'vsnip' }, -- For vsnip users.
+      { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
