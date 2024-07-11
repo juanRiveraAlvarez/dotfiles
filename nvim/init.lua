@@ -15,6 +15,8 @@ vim.opt.ruler = true
 vim.opt.showmatch = true
 vim.opt.wrap = false
 
+local home = os.getenv('HOME')
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -92,22 +94,37 @@ local on_attach = function(_,bufnr)
   end, {buffer = bufnr})
 end
 
+require'lspconfig'.eslint.setup{
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end,
+}
+
 require'lspconfig'.tsserver.setup{
-  on_attach == on_attach,
+  on_attach = on_attach,
   init_options = {
     plugins = {
       {
         name = "@vue/typescript-plugin",
         location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-        languages = {"javascript", "typescript", "vue"},
+        languages = {"javascript", "typescript", "vue", "tsx"},
       },
     },
   },
   filetypes = {
     "javascript",
     "typescript",
+    "typescriptreact",
+    "typescript.tsx",
     "vue",
   },
+}
+
+require'lspconfig'.lemminx.setup{
+  on_attach = on_attach,
 }
 
 require'lspconfig'.clangd.setup{
@@ -131,18 +148,8 @@ require'lspconfig'.cssls.setup {
   capabilities = capabilities,
 }
 
-require'lspconfig'.pylsp.setup{
+require'lspconfig'.pyright.setup{
   on_attach = on_attach,
-  settings = {
-    pylsp = {
-      plugins = {
-        pycodestyle = {
-          ignore = {'W391'},
-          maxLineLength = 100
-        }
-      }
-    }
-  }
 }
 
 require'lspconfig'.tsserver.setup{
@@ -165,7 +172,11 @@ require'lspconfig'.tsserver.setup{
 
 require'lspconfig'.jdtls.setup{ 
   on_attach = on_attach,
-  cmd = { 'jdtls' } 
+  cmd = { 
+    'jdtls',
+    '-javaagent:' .. '~/Projects/dotfiles/nvim/lombok.jar',
+    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
+  } 
 }
 
 local cmp = require'cmp'
@@ -249,6 +260,8 @@ require('lualine').setup {
 
 vim.opt.termguicolors = true
 vim.cmd.colorscheme('gruvbox')
+vim.cmd.colorscheme('gruvbox')
+
 
 vim.keymap.set('n', 'zj', '<cmd>bprevious<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'zk', '<cmd>bnext<cr>', {desc = 'Open terminal'})
