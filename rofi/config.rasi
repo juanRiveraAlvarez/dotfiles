@@ -11,6 +11,7 @@ configuration {
     display-filebrowser: "󰉋 filebrowser:";
 
     dpi: 120;
+
 }
 
 @theme "gruvbox-material"

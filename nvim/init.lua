@@ -30,7 +30,68 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local conf = {}
+conf.header = {
+  "                                                       ",
+  "                                                       ",
+  "                                                       ",
+  "            ▐ ▄ ▄▄▄ .       ▌ ▐·▪  • ▌ ▄ ·.            ",
+  "             •█▌▐█▀▄.▀·▪     ▪█·█▌██ ·██ ▐███▪         ",
+  "             ▐█▐▐▌▐▀▀▪▄ ▄█▀▄ ▐█▐█•▐█·▐█ ▌▐▌▐█·         ",
+  "             ██▐█▌▐█▄▄▌▐█▌.▐▌ ███ ▐█▌██ ██▌▐█▌         ",
+  "             ▀▀ █▪ ▀▀▀  ▀█▄▀▪. ▀  ▀▀▀▀▀  █▪▀▀▀         ",
+  "                                                       ",
+  "                                                       ",
+  "                  Config by Juan Rivera                ",
+  "                                                       ",
+  "                                                       ",
+  "                                                       ",
+  "                                                       ",
+}
+conf.center = {
+  {
+    icon = "󰈞  ",
+    desc = "Find  File                              ",
+    action = "Neotree toggle",
+    key = "z z",
+  },
+  {
+    icon = "  ",
+    desc = "Open Nvim config                        ",
+    action = "tabnew $MYVIMRC | tcd %:p:h",
+    key = "<Leader> e v",
+  },
+  {
+    icon = "  ",
+    desc = "New file                                ",
+    action = "enew",
+    key = "e",
+  },
+  {
+    icon = "󰗼  ",
+    desc = "Quit Nvim                               ",
+    -- desc = "Quit Nvim                               ",
+    action = "qa",
+    key = "q",
+  },
+}
+
 require("lazy").setup({
+  {
+  'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+    require('dashboard').setup {
+      theme = 'doom',
+      shortcut_type = 'number',
+      config = conf
+    }
+    end,
+    dependencies = { {'nvim-tree/nvim-web-devicons'}}
+  },
+  {'MaximilianLloyd/ascii.nvim', requires = {
+	"MunifTanjim/nui.nvim"}
+  },
   {'hrsh7th/vim-vsnip'},
   {'hrsh7th/vim-vsnip-integ'},
   {
@@ -87,97 +148,78 @@ require("lazy").setup({
 
 local on_attach = function(_,bufnr)
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
-  vim.keymap.set('n','gd',vim.lsp.buf.definition,{buffer = bufnr})
   vim.keymap.set('n','gi',vim.lsp.buf.implementation,{buffer = bufnr})
   vim.keymap.set('n','ff', function()
     vim.lsp.buf.format {async = true}
   end, {buffer = bufnr})
 end
 
-require'lspconfig'.eslint.setup{
-  on_attach = function(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-}
+--require'lspconfig'.eslint.setup{
+--  on_attach = function(client, bufnr)
+--    vim.api.nvim_create_autocmd("BufWritePre", {
+--      buffer = bufnr,
+--      command = "EslintFixAll",
+--    })
+--  end,
+--}
 
-require'lspconfig'.tsserver.setup{
-  on_attach = on_attach,
-  init_options = {
-    plugins = {
-      {
-        name = "@vue/typescript-plugin",
-        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-        languages = {"javascript", "typescript", "vue", "tsx"},
-      },
-    },
-  },
-  filetypes = {
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "typescript.tsx",
-    "vue",
-  },
-}
+--require'lspconfig'.tsserver.setup{
+--  on_attach = on_attach,
+--  init_options = {
+--    plugins = {
+--      {
+--        name = "@vue/typescript-plugin",
+--        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+--        languages = {"javascript", "typescript", "vue", "tsx"},
+--      },
+--    },
+--  },
+--  filetypes = {
+--    "javascript",
+--    "typescript",
+--    "typescriptreact",
+--    "typescript.tsx",
+--    "vue",
+--  },
+--}
 
-require'lspconfig'.lemminx.setup{
-  on_attach = on_attach,
-}
+--require'lspconfig'.lemminx.setup{
+--  on_attach = on_attach,
+--}
 
-require'lspconfig'.clangd.setup{
-  on_attach = on_attach,
-}
+--require'lspconfig'.clangd.setup{
+--  on_attach = on_attach,
+--}
 
 --Enable (broadcasting) snippet capability for completion
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
+--capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require'lspconfig'.html.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+--require'lspconfig'.html.setup {
+--  on_attach = on_attach,
+--  capabilities = capabilities,
+--}
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require'lspconfig'.cssls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+--require'lspconfig'.cssls.setup {
+--on_attach = on_attach,
+--capabilities = capabilities,
+--}
 
-require'lspconfig'.pyright.setup{
-  on_attach = on_attach,
-}
+--require'lspconfig'.pyright.setup{
+--  on_attach = on_attach,
+--}
 
-require'lspconfig'.tsserver.setup{
-  on_attach = on_attach,
-  init_options = {
-    plugins = {
-      {
-        name = "@vue/typescript-plugin",
-        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-        languages = {"javascript", "typescript", "vue"},
-      },
-    },
-  },
-  filetypes = {
-    "javascript",
-    "typescript",
-    "vue",
-  },
-}
+--require'lspconfig'.jdtls.setup{ 
+--  on_attach = on_attach,
+--  cmd = { 
+--    'jdtls',
+--    '-Xmx1Ga',
+--    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
+--    '-jar $(echo "$JAR")',
+--  } 
+--}
 
-require'lspconfig'.jdtls.setup{ 
-  on_attach = on_attach,
-  cmd = { 
-    'jdtls',
-    '-javaagent:' .. '~/Projects/dotfiles/nvim/lombok.jar',
-    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
-  } 
-}
 
 local cmp = require'cmp'
 
@@ -259,7 +301,6 @@ require('lualine').setup {
 }
 
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('gruvbox')
 vim.cmd.colorscheme('gruvbox')
 
 
