@@ -53,7 +53,7 @@ conf.center = {
     icon = "󰈞  ",
     desc = "Find  File                              ",
     action = "Neotree toggle",
-    key = "z z",
+    key = "f f",
   },
   {
     icon = "  ",
@@ -77,6 +77,10 @@ conf.center = {
 }
 
 require("lazy").setup({
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  },
   {
   'nvimdev/dashboard-nvim',
     event = 'VimEnter',
@@ -310,3 +314,7 @@ vim.keymap.set('n', 'zq', '<cmd>bdelete<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'tt', '<cmd>term<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'fv', '<cmd>vs<cr>', {desc = 'Open terminal'})
 vim.keymap.set('n', 'sp', '<cmd>split<cr>', {desc = 'Open terminal'})
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', 'ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', 'fb', builtin.buffers, { desc = 'Telescope buffers' })
