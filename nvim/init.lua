@@ -93,11 +93,40 @@ require("lazy").setup({
     end,
     dependencies = { {'nvim-tree/nvim-web-devicons'}}
   },
+  {
+  "glepnir/lspsaga.nvim",
+  event = "LspAttach",
+  config = function()
+    require("lspsaga").setup({
+      ui = {
+        border = "rounded", -- Bordes redondeados en las alertas
+        title = true,
+        devicon = true,
+      },
+      lightbulb = {
+        enable = true, -- Muestra un bombillo si hay acciones disponibles
+        sign = true,
+      },
+      diagnostic = {
+        virtual_text = false, -- Evita que las alertas se vean encima del código
+        signs = true,
+        underline = true,
+        float = {
+          border = "rounded",
+        },
+      },
+    })
+  end,
+  dependencies = { { "nvim-tree/nvim-web-devicons" } },
+  },
   {'MaximilianLloyd/ascii.nvim', requires = {
 	"MunifTanjim/nui.nvim"}
   },
   {'hrsh7th/vim-vsnip'},
   {'hrsh7th/vim-vsnip-integ'},
+--  { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true},
+  {"sainnhe/gruvbox-material"},
+
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -128,7 +157,7 @@ require("lazy").setup({
   {'hrsh7th/cmp-cmdline'},
   {'hrsh7th/nvim-cmp'},
   {"L3MON4D3/LuaSnip"},
-  {"morhetz/gruvbox"},
+--  {"morhetz/gruvbox"},
   {'williamboman/mason.nvim',
     config = true,
   },
@@ -153,7 +182,9 @@ require("lazy").setup({
 local on_attach = function(_,bufnr)
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.keymap.set('n','gi',vim.lsp.buf.implementation,{buffer = bufnr})
-  vim.keymap.set('n','ff', function()
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "Find References" })
+  vim.keymap.set('n','ft', function()
     vim.lsp.buf.format {async = true}
   end, {buffer = bufnr})
 end
@@ -213,17 +244,33 @@ end
 --require'lspconfig'.pyright.setup{
 --  on_attach = on_attach,
 --}
+--
+local lombok_path = vim.fn.expand("~/.local/share/lombok/lombok.jar")
 
---require'lspconfig'.jdtls.setup{ 
---  on_attach = on_attach,
---  cmd = { 
---    'jdtls',
---    '-Xmx1Ga',
+require'lspconfig'.jdtls.setup{ 
+  root_dir = require("lspconfig").util.root_pattern("pom.xml", "build.py", "gradle.build", ".git","src"),
+  on_attach = on_attach,
+  cmd = { 
+    'jdtls',
+    '-Xmx1Ga',
 --    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
---    '-jar $(echo "$JAR")',
---  } 
---}
-
+    '--jvm-arg=-javaagent:' .. lombok_path, 
+    '-jar $(echo "$JAR")',
+  },
+  settings = {
+    java = {
+      project = {
+        referencedLibraries = {
+          "lib/**/*.jar"
+        },
+        sourcePaths = { "src" }
+      },
+      errors = {
+        incompleteClasspath = "ignore"
+      }
+    }
+  }
+}
 
 local cmp = require'cmp'
 
@@ -304,8 +351,29 @@ require('lualine').setup {
   extensions = {}
 }
 
+
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('gruvbox')
+vim.o.background = "dark" -- or "light" for light mode
+vim.cmd.colorscheme('gruvbox-material')
+
+vim.cmd [[
+  highlight DiagnosticVirtualTextError guifg=#FF5555 gui=bold
+  highlight DiagnosticVirtualTextWarn guifg=#458588 gui=bold
+  highlight DiagnosticVirtualTextInfo guifg=#00FFFF gui=bold
+  highlight DiagnosticVirtualTextHint guifg=#50FA7B gui=italic
+]]
+
+vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#FF5555", bg = "NONE" })
+vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { fg = "#458588", bg = "NONE" })
+vim.api.nvim_set_hl(0, "DiagnosticSignInfo", { fg = "#00FFFF", bg = "NONE" })
+vim.api.nvim_set_hl(0, "DiagnosticSignHint", { fg = "#50FA7B", bg = "NONE" })
+
+
+local signs = { Error = "✘", Warn = "⚠", Hint = "💡", Info = "ℹ" }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
 
 
 vim.keymap.set('n', 'zj', '<cmd>bprevious<cr>', {desc = 'Open terminal'})
