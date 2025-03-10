@@ -1,7 +1,10 @@
 configuration {
     show-icons: true;
-    font: "Agave Nerd Font 10";
+    font: "Agave Nerd Font 11";
     icon-theme: "Papirus-Dark";
+
+    transparency: "real";  
+    blur: "true";         
 
 
     display-ssh:    "󰣀 ssh:";

@@ -1,3 +1,8 @@
+* {
+}
+window {
+}
+
 /**
  * Gruvbox rofi theme
  *
@@ -30,12 +35,16 @@
     yellowdark: #b47109;
 
     foreground:  @gruv9;
-    background-color:  transparent;
     
     highlight: underline bold #eee0b7;
+    
+    border: 0px;
+    background-color: rgba(0, 0, 0, 0.3); /* Fondo negro con 60% de opacidad */
+    text-color: #ffffff; /* Color del texto */
+
+
 
     transparent: rgba(46,52,64,0);
-
 }
 
 window {
@@ -44,7 +53,6 @@ window {
     height: 400px;
     width: 500px;
 
-    background-color: @transparent;
     spacing: 0;
     children:  [mainbox];
     orientation: horizontal;
@@ -59,15 +67,11 @@ message {
     padding: 10px;
     border:  0px 2px 2px 2px;
     border-color: @purple;
-    background-color: @gruv7;
 }
 
 inputbar {
     color: @gruv6;
     padding: 14px;
-    background-color: @gruv0;
-    border-color: @purple;
-
     border-radius: 10px 10px 0px 0px;
 }
 
@@ -77,53 +81,23 @@ entry, prompt, case-indicator {
 }
 
 
-listview {
-    padding: 8px;
-    border-radius: 0px 0px 10px 10px;
-    border-color: @purple;
-    background-color: @gruv0;
-    dynamic: false;
-}
-
 element {
     padding: 5px;
     vertical-align: 0.5;
     border-radius: 10px;
-    color: @foreground;
     text-color: @gruv6;
-    background-color: @gruv1;
 }
 
-element.normal.active {
-    background-color: @yellow;
-}
-
-element.normal.urgent {
-    background-color: @reddark;
-}
 
 element.selected.normal {
-    background-color: @gruv7;
+    background-color: #0000;
     text-color: @gruv0;
 }
 
-element.selected.active {
-    background-color: @yellowdark;
-}
-
-element.selected.urgent {
-    background-color: @red;
-}
-
-element.alternate.normal {
-    background-color: @transparent;
-}
 
 element-text, element-icon {
     size: 3ch;
     vertical-align: 0.5;
-    background-color: inherit;
-    text-color: @gruv6;
 }
 
 button {
