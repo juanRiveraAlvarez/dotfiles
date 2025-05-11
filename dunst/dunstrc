@@ -1,0 +1,58 @@
+[global]
+    monitor = 0
+    follow = mouse
+    width = (0, 300)
+    height = 300
+    origin = top-right
+    offset = 10x10
+    transparency = 0
+    padding = 8
+    horizontal_padding = 8
+    frame_width = 2
+    frame_color = "#458588"
+    separator_color = frame
+    separator_height = 2
+
+    # Cambia la fuente a la que vos querás
+    font = DepartureMonoNerdFont 10
+
+    format = "%s\n%b"
+    icon_position = left
+    enable_recursive_icon_lookup = true
+    max_icon_size = 48
+
+    icon_position = off
+    min_icon_size = 0
+    max_icon_size = 0
+
+    show_age_threshold = 60
+    sort = yes
+    idle_threshold = 120
+
+    markup = full
+    word_wrap = yes
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+
+    show_indicators = no
+    enable_recursive_icon_lookup = false
+    sticky_history = yes
+    history_length = 100
+
+[urgency_low]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    frame_color = "#282828"
+
+[urgency_normal]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    frame_color = "#282828"
+
+[urgency_critical]
+    background = "#282828"
+    foreground = "#fb4934"
+    frame_color = "#fb4934"
+
