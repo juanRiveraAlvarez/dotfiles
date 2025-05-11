@@ -1,0 +1,18 @@
+Fonts: 
+  BigBlueTermPlusNerdFont
+
+Packages:
+  dwm
+  dwmblocks
+  alacritty
+  dunst
+  nvim
+  ranger
+  rofi
+  zathura
+  xwinwrap
+  mpv
+  feh
+  blueman-applet
+  nm-applet
+  
