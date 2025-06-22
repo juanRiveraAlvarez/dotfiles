@@ -1,0 +1,14 @@
+set selection-clipboard clipboard
+# Invertir colores al estilo Gruvbox Dark
+set recolor true
+set recolor-lightcolor "#282828"  # Fondo oscuro para texto claro
+set recolor-darkcolor "#ebdbb2"   # Texto claro para fondo oscuro
+
+# Colores para resaltar y otras interfaces
+set highlight-color "#fabd2f"    # Amarillo para resaltar
+set statusbar-fg "#ebdbb2"       # Texto de la barra de estado
+
+# Colores de texto en general
+
+# Resaltado de enlaces y búsqueda
+
