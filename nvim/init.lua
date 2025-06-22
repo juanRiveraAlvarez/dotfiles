@@ -81,6 +81,20 @@ require("lazy").setup({
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     requires = { {'nvim-lua/plenary.nvim'} }
   },
+
+  {
+  "kndndrj/nvim-dbee",
+  dependencies = {
+    "MunifTanjim/nui.nvim",
+  },
+  build = ":DbeeInstall",
+  config = function()
+    require("dbee").setup({
+      sources = {},
+    })
+  end,
+},
+
   {
   'nvimdev/dashboard-nvim',
     event = 'VimEnter',
@@ -158,6 +172,7 @@ require("lazy").setup({
   {'hrsh7th/nvim-cmp'},
   {"L3MON4D3/LuaSnip"},
 --  {"morhetz/gruvbox"},
+  {"ellisonleao/gruvbox.nvim", config = true},
   {'williamboman/mason.nvim',
     config = true,
   },
@@ -245,15 +260,17 @@ end
 --  on_attach = on_attach,
 --}
 --
+--
 local lombok_path = vim.fn.expand("~/.local/share/lombok/lombok.jar")
 
+
 require'lspconfig'.jdtls.setup{ 
-  root_dir = require("lspconfig").util.root_pattern("pom.xml", "build.py", "gradle.build", ".git","src"),
+  root_dir = require("lspconfig").util.root_pattern("pom.xml", "build.py", "gradle.build", ".git","src","run.sh"),
   on_attach = on_attach,
   cmd = { 
     'jdtls',
     '-Xmx1Ga',
---    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
+    '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
     '--jvm-arg=-javaagent:' .. lombok_path, 
     '-jar $(echo "$JAR")',
   },
@@ -310,9 +327,8 @@ cmp.setup({
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'auto',
+    theme = 'gruvbox',
     component_separators = { left = ' | ', right = ' | '},
-    section_separators = { left = '', right = ''},
     disabled_filetypes = {
       statusline = {},
       winbar = {},
@@ -354,7 +370,7 @@ require('lualine').setup {
 
 vim.opt.termguicolors = true
 vim.o.background = "dark" -- or "light" for light mode
-vim.cmd.colorscheme('gruvbox-material')
+vim.cmd.colorscheme('gruvbox')
 
 vim.cmd [[
   highlight DiagnosticVirtualTextError guifg=#FF5555 gui=bold
@@ -372,7 +388,7 @@ vim.api.nvim_set_hl(0, "DiagnosticSignHint", { fg = "#50FA7B", bg = "NONE" })
 local signs = { Error = "✘", Warn = "⚠", Hint = "💡", Info = "ℹ" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  vim.fn.sign_define("MySign", { text = "⚡", texthl = "WarningMsg" })
 end
 
 
@@ -386,3 +402,18 @@ vim.keymap.set('n', 'sp', '<cmd>split<cr>', {desc = 'Open terminal'})
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', 'ff', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', 'fb', builtin.buffers, { desc = 'Telescope buffers' })
+
+vim.keymap.set("n", "db", function()
+  require("dbee").open({
+    {
+      name = "MariaDB Local",
+      type = "mysql",
+      host = "127.0.0.1",
+      port = 3307,
+      user = "root",
+      password = "admin",
+      database = "",
+    },
+  })
+end, { desc = "Abrir DBBee" })
+
